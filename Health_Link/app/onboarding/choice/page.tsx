@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 
 export default function OnboardingChoicePage() {
   const [isLoading, setIsLoading] = useState(false)
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
 
   const handleChoice = async (addMedicalInfo: boolean) => {
@@ -41,11 +41,12 @@ export default function OnboardingChoicePage() {
   }
 
   useEffect(() => {
-    if (!session) {
+    if (status === "unauthenticated") {
       router.push("/login")
     }
-  }, [session, router])
+  }, [status, router])
 
+  if (status === "loading") return null
   if (!session) return null
 
   return (

@@ -51,21 +51,12 @@ export default function RegisterPage() {
 
       if (response.ok) {
         toast.success("Account created successfully!")
-        
-        // Sign in the user
-        const result = await signIn("credentials", {
+        // Sign in and let NextAuth handle cookie + redirect
+        await signIn("credentials", {
           email: formData.email,
           password: formData.password,
-          redirect: false,
+          callbackUrl: "/onboarding/choice",
         })
-
-        if (result?.error) {
-          toast.error("Sign in failed after registration")
-          router.push("/login")
-        } else {
-          // Redirect to onboarding choice page
-          router.push("/onboarding/choice")
-        }
       } else {
         toast.error(data.error || "Failed to create account")
       }
